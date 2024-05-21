@@ -29,15 +29,21 @@ class AlienInvasion:
             if even.type == pygame.QUIT:
                 sys.exit()
             elif even.type == pygame.KEYDOWN:
-                if even.key == pygame.K_RIGHT:
-                    self.ship.moving_right = True
-                elif even.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_events(even)
             elif even.type == pygame.KEYUP:
-                if even.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                elif even.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_events(even)
+
+    def _check_keydown_events(self, even):
+        if even.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif even.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+
+    def _check_keyup_events(self, even):
+        if even.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif even.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _update_screen(self):
         """refresh images on view"""
