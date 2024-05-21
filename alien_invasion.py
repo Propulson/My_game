@@ -1,23 +1,49 @@
-import sys, pygame
+import pygame
+import sys
+from setting import Settings
+from ship import Ship
 
 
 class AlienInvasion:
     """class for resource and rule game"""
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((1920, 1080))
+        pygame.init()
+        self.settings = Settings()
+        self.screen = pygame.display.set_mode(
+            (self.settings.screen_width, self.settings.screen_height)
+        )
         pygame.display.set_caption('Alien Invasion')
-        self.bg_color = (230, 230, 230)  # Color
+        self.ship = Ship(screen)
 
     def run_game(self):
         """Main game start"""
         while True:
             """checking mouse and keyboard"""
-            for even in pygame.event.get():
-                if even.type == pygame.QUIT:
-                    sys.exit()
-            self.screen.fill(self.bg_color)
-            pygame.display.flip()
+            self._check_events()
+            self._update_screen()
+
+    def _check_events(self):
+        """mouse and keyboard refresh"""
+        for even in pygame.event.get():
+            if even.type == pygame.QUIT:
+                sys.exit()
+            elif even.type == pygame.KEYDOWN:
+                if even.key == pygame.K_RIGHT:
+                    self.ship.moving_right = True
+                elif even.key == pygame.K_LEFT:
+                    self.ship.moving_left = True
+            elif even.type == pygame.KEYUP:
+                if even.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+                elif even.key == pygame.K_LEFT:
+                    self.ship.moving_left = False
+
+    def _update_screen(self):
+        """refresh images on view"""
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
