@@ -27,11 +27,7 @@ class AlienInvasion:
             """checking mouse and keyboard"""
             self._check_events()
             self.ship.update()
-            self.bullets.update()
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-            print(len(self.bullets))
+            self._update_bullets()
             self._update_screen()
 
     def _check_events(self):
@@ -61,9 +57,15 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _fire_bullet(self):
-        """Create new missile"""
+        """Create a new missile"""
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        self.bullets.update()
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         """refresh images on view"""
