@@ -9,7 +9,6 @@ class Ship():
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        self.x = float(self.rect.x)
 
         # download ship-image
         self.image = pygame.image.load('images/ship.bmp')
@@ -18,6 +17,7 @@ class Ship():
         # flag moving
         self.moving_right = False
         self.moving_left = False
+        self.x = float(self.rect.x)
 
     def update(self):
         """refresh position ship if a flag"""
