@@ -26,5 +26,9 @@ class Ship():
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
-    def blitme(self):
+    def biltme(self):
         self.screen.bilt(self.image, self.rect)
+
+    def center_ship(self):
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)

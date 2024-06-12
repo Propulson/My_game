@@ -32,9 +32,10 @@ class AlienInvasion:
         while True:
             """checking mouse and keyboard"""
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
             self._update_screen()
 
     def _check_events(self):
@@ -109,7 +110,7 @@ class AlienInvasion:
     def _update_screen(self):
         """refresh images on view"""
         self.screen.fill(self.settings.bg_color)
-        self.ship.blitme()
+        self.ship.biltme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
@@ -120,7 +121,8 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print('Ship hit!!!')
+            self._ship_hit()
+        self._check_aliens_bottom()
 
     def _check_fleet_edges(self):
         """react on side pos"""
@@ -134,6 +136,26 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
+
+    def _ship_hit(self):
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+            self.aliens.empty()
+            self.bullets.empty()
+            self._create_fleet()
+            self.ship.center_ship()
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+
+    def _check_aliens_bottom(self):
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                self._ship_hit()
+                break
+
+
 
 
 if __name__ == '__main__':
